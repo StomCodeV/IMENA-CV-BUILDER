@@ -1,4 +1,4 @@
-        * {
+   * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -193,11 +193,11 @@
             background: #e2e8f0;
             border-radius: 15px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background 0.3s;
         }
         
         html.dark .theme-toggle {
-            background: #254066;
+            background: #475569;
         }
         
         .theme-toggle-circle {
@@ -217,5 +217,5 @@
         
         html.dark .theme-toggle-circle {
             transform: translateX(30px);
-            background: #2e5493;
+            background: #1e293b;
         }
