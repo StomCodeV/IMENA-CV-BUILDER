@@ -24,11 +24,308 @@
 
   <!-- Supabase JS (UMD) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
-   <script type="text/babel">
+  <script type="text/babel">
   (function () {
     const { useState, useEffect, useRef, forwardRef } = React;
     const Motion = window['framer-motion'] || {};
     const motion = Motion.motion || (() => null);
+
+    // ==================== TRANSLATIONS ====================
+    const translations = {
+      en: {
+        // Header
+        appTitle: 'MODERN CV BUILDER',
+        // Landing
+        landingTitle: 'Modern CV Builder',
+        landingMotto: 'Create your CV, preview it, and download it for free.',
+        startBuilding: 'Start Building Your CV',
+        back: 'Back',
+        // Personal Info
+        personalInfo: 'Personal Information',
+        uploadPhoto: 'Upload Photo',
+        upload: 'Upload',
+        fullName: 'Full Name',
+        fullNamePlaceholder: 'Jean Paul Mugabo',
+        email: 'Email',
+        emailPlaceholder: 'jpmugabo@example.com',
+        phone: 'Phone',
+        phonePlaceholder: '+250 788 123 456',
+        location: 'Location',
+        locationPlaceholder: 'Kigali, Rwanda',
+        // Professional Summary
+        professionalSummary: 'Professional Summary',
+        professionalSummaryPlaceholder: 'A dedicated professional...',
+        // Education
+        education: 'Education',
+        institutionName: 'Institution Name',
+        institutionPlaceholder: 'University of Rwanda',
+        degree: 'Degree',
+        degreePlaceholder: "Bachelor's in CS",
+        graduationYear: 'Graduation Year',
+        graduationYearPlaceholder: '2024',
+        addEducation: 'Add Education',
+        // Work Experience
+        workExperience: 'Work Experience',
+        jobTitle: 'Job Title',
+        jobTitlePlaceholder: 'Job Title',
+        employer: 'Employer',
+        employerPlaceholder: 'Employer',
+        startDate: 'Start Date',
+        startDatePlaceholder: 'Start Date',
+        endDate: 'End Date',
+        endDatePlaceholder: 'End Date',
+        description: 'Description',
+        descriptionPlaceholder: 'Description',
+        addWork: 'Add Work',
+        present: 'Present',
+        // Skills
+        skills: 'Skills',
+        software: 'Software',
+        softwarePlaceholder: 'Microsoft Office, Adobe Suite',
+        dataTools: 'Data & Analytics',
+        dataToolsPlaceholder: 'Excel, Tableau',
+        programming: 'Programming',
+        programmingPlaceholder: 'Python, JavaScript',
+        // Languages
+        languages: 'Languages',
+        kinyarwanda: 'Kinyarwanda',
+        english: 'English',
+        french: 'French',
+        native: 'Native',
+        fluent: 'Fluent',
+        intermediate: 'Intermediate',
+        basic: 'Basic',
+        // Volunteerism
+        volunteerism: 'Volunteerism',
+        activityRole: 'Activity/Role',
+        activityRolePlaceholder: 'Activity/Role',
+        organization: 'Organization',
+        organizationPlaceholder: 'Organization',
+        addVolunteer: 'Add Volunteer',
+        // References
+        references: 'References',
+        referenceName: 'Reference Name',
+        referenceNamePlaceholder: 'Reference Name',
+        referenceTitle: 'Title',
+        referenceTitlePlaceholder: 'Title',
+        referenceEmail: 'Email',
+        referenceEmailPlaceholder: 'reference@example.com',
+        referencePhone: 'Phone',
+        referencePhonePlaceholder: '+250 788 000 000',
+        addReference: 'Add Reference',
+        // Buttons
+        downloadPdf: 'Download PDF',
+        exportCsv: 'Export CSV',
+        livePreview: 'Live Preview',
+        // CV Preview
+        professionalObjective: 'Professional Objective',
+        // Toast messages
+        photoUploadError: 'Error uploading photo (submission will continue without photo).',
+        savingError: 'Error saving submission (check server).',
+        supabaseUnavailable: 'Supabase unavailable — submission skipped.',
+        submissionSaved: 'Submission saved.',
+        cvDownloaded: 'CV downloaded successfully!',
+        dataExported: 'Data exported as CSV',
+        unexpectedError: 'Unexpected error. Check console.',
+      },
+      fr: {
+        // Header
+        appTitle: 'CRÉATEUR DE CV MODERNE',
+        // Landing
+        landingTitle: 'Créateur de CV Moderne',
+        landingMotto: 'Créez votre CV, prévisualisez-le et téléchargez-le gratuitement.',
+        startBuilding: 'Commencer à Créer Votre CV',
+        back: 'Retour',
+        // Personal Info
+        personalInfo: 'Informations Personnelles',
+        uploadPhoto: 'Télécharger une Photo',
+        upload: 'Télécharger',
+        fullName: 'Nom Complet',
+        fullNamePlaceholder: 'Jean Paul Mugabo',
+        email: 'Email',
+        emailPlaceholder: 'jpmugabo@exemple.com',
+        phone: 'Téléphone',
+        phonePlaceholder: '+250 788 123 456',
+        location: 'Localisation',
+        locationPlaceholder: 'Kigali, Rwanda',
+        // Professional Summary
+        professionalSummary: 'Résumé Professionnel',
+        professionalSummaryPlaceholder: 'Un professionnel dévoué...',
+        // Education
+        education: 'Éducation',
+        institutionName: "Nom de l'Institution",
+        institutionPlaceholder: 'Université du Rwanda',
+        degree: 'Diplôme',
+        degreePlaceholder: 'Licence en Informatique',
+        graduationYear: "Année d'Obtention",
+        graduationYearPlaceholder: '2024',
+        addEducation: 'Ajouter une Éducation',
+        // Work Experience
+        workExperience: 'Expérience Professionnelle',
+        jobTitle: "Titre du Poste",
+        jobTitlePlaceholder: 'Titre du Poste',
+        employer: 'Employeur',
+        employerPlaceholder: 'Employeur',
+        startDate: 'Date de Début',
+        startDatePlaceholder: 'Date de Début',
+        endDate: 'Date de Fin',
+        endDatePlaceholder: 'Date de Fin',
+        description: 'Description',
+        descriptionPlaceholder: 'Description',
+        addWork: 'Ajouter une Expérience',
+        present: 'Présent',
+        // Skills
+        skills: 'Compétences',
+        software: 'Logiciels',
+        softwarePlaceholder: 'Microsoft Office, Adobe Suite',
+        dataTools: 'Données et Analyses',
+        dataToolsPlaceholder: 'Excel, Tableau',
+        programming: 'Programmation',
+        programmingPlaceholder: 'Python, JavaScript',
+        // Languages
+        languages: 'Langues',
+        kinyarwanda: 'Kinyarwanda',
+        english: 'Anglais',
+        french: 'Français',
+        native: 'Langue Maternelle',
+        fluent: 'Courant',
+        intermediate: 'Intermédiaire',
+        basic: 'Basique',
+        // Volunteerism
+        volunteerism: 'Bénévolat',
+        activityRole: 'Activité/Rôle',
+        activityRolePlaceholder: 'Activité/Rôle',
+        organization: 'Organisation',
+        organizationPlaceholder: 'Organisation',
+        addVolunteer: 'Ajouter un Bénévolat',
+        // References
+        references: 'Références',
+        referenceName: 'Nom de la Référence',
+        referenceNamePlaceholder: 'Nom de la Référence',
+        referenceTitle: 'Titre',
+        referenceTitlePlaceholder: 'Titre',
+        referenceEmail: 'Email',
+        referenceEmailPlaceholder: 'reference@exemple.com',
+        referencePhone: 'Téléphone',
+        referencePhonePlaceholder: '+250 788 000 000',
+        addReference: 'Ajouter une Référence',
+        // Buttons
+        downloadPdf: 'Télécharger PDF',
+        exportCsv: 'Exporter CSV',
+        livePreview: 'Aperçu en Direct',
+        // CV Preview
+        professionalObjective: 'Objectif Professionnel',
+        // Toast messages
+        photoUploadError: 'Erreur de téléchargement de la photo (la soumission continuera sans photo).',
+        savingError: 'Erreur lors de la sauvegarde (vérifiez le serveur).',
+        supabaseUnavailable: 'Supabase indisponible — soumission ignorée.',
+        submissionSaved: 'Soumission enregistrée.',
+        cvDownloaded: 'CV téléchargé avec succès!',
+        dataExported: 'Données exportées en CSV',
+        unexpectedError: 'Erreur inattendue. Consultez la console.',
+      },
+      rw: {
+        // Header
+        appTitle: 'URUBUGA RWO GUKORA CV IGEZWEHO',
+        // Landing
+        landingTitle: 'Urubuga rwo Gukora CV Igezweho',
+        landingMotto: 'Kora CV yawe, uyirebe, kandi uyipakure kubusa.',
+        startBuilding: 'Tangira Gukora CV Yawe',
+        back: 'Gusubira Inyuma',
+        // Personal Info
+        personalInfo: 'Amakuru Yihariye',
+        uploadPhoto: 'Ohereza Ifoto',
+        upload: 'Ohereza',
+        fullName: 'Amazina Yombi',
+        fullNamePlaceholder: 'Jean Paul Mugabo',
+        email: 'Imeri',
+        emailPlaceholder: 'jpmugabo@urugero.com',
+        phone: 'Telefoni',
+        phonePlaceholder: '+250 788 123 456',
+        location: 'Aho Ubarizwa',
+        locationPlaceholder: 'Kigali, Rwanda',
+        // Professional Summary
+        professionalSummary: 'Incamake y\'Umwuga',
+        professionalSummaryPlaceholder: 'Umukozi wiyemeje...',
+        // Education
+        education: 'Amashuri',
+        institutionName: 'Izina ry\'Ishuri',
+        institutionPlaceholder: 'Kaminuza y\'u Rwanda',
+        degree: 'Impamyabumenyi',
+        degreePlaceholder: 'Icyiciro cya Kabiri muri Mudasobwa',
+        graduationYear: 'Umwaka wo Kurangiza',
+        graduationYearPlaceholder: '2024',
+        addEducation: 'Ongeraho Amashuri',
+        // Work Experience
+        workExperience: 'Uburambe bw\'Akazi',
+        jobTitle: 'Umwanya w\'Akazi',
+        jobTitlePlaceholder: 'Umwanya w\'Akazi',
+        employer: 'Umukoresha',
+        employerPlaceholder: 'Umukoresha',
+        startDate: 'Itariki yo Gutangira',
+        startDatePlaceholder: 'Itariki yo Gutangira',
+        endDate: 'Itariki yo Kurangiza',
+        endDatePlaceholder: 'Itariki yo Kurangiza',
+        description: 'Ibisobanuro',
+        descriptionPlaceholder: 'Ibisobanuro',
+        addWork: 'Ongeraho Akazi',
+        present: 'Ubu',
+        // Skills
+        skills: 'Ubumenyi',
+        software: 'Porogaramu',
+        softwarePlaceholder: 'Microsoft Office, Adobe Suite',
+        dataTools: 'Amakuru n\'Isesengura',
+        dataToolsPlaceholder: 'Excel, Tableau',
+        programming: 'Guhindura Porogaramu',
+        programmingPlaceholder: 'Python, JavaScript',
+        // Languages
+        languages: 'Indimi',
+        kinyarwanda: 'Ikinyarwanda',
+        english: 'Icyongereza',
+        french: 'Igifaransa',
+        native: 'Ururimi Kavukire',
+        fluent: 'Neza Cyane',
+        intermediate: 'Hagati',
+        basic: 'Shingiro',
+        // Volunteerism
+        volunteerism: 'Ubushake',
+        activityRole: 'Igikorwa/Uruhare',
+        activityRolePlaceholder: 'Igikorwa/Uruhare',
+        organization: 'Ishyirahamwe',
+        organizationPlaceholder: 'Ishyirahamwe',
+        addVolunteer: 'Ongeraho Ubushake',
+        // References
+        references: 'Abantu Baguha Icyiyerekano',
+        referenceName: 'Izina ry\'Uwaguha Icyiyerekano',
+        referenceNamePlaceholder: 'Izina ry\'Uwaguha Icyiyerekano',
+        referenceTitle: 'Umutwe',
+        referenceTitlePlaceholder: 'Umutwe',
+        referenceEmail: 'Imeri',
+        referenceEmailPlaceholder: 'icyiyerekano@urugero.com',
+        referencePhone: 'Telefoni',
+        referencePhonePlaceholder: '+250 788 000 000',
+        addReference: 'Ongeraho Icyiyerekano',
+        // Buttons
+        downloadPdf: 'Pakura PDF',
+        exportCsv: 'Kohereza CSV',
+        livePreview: 'Kureba Ako Kanya',
+        // CV Preview
+        professionalObjective: 'Intego z\'Umwuga',
+        // Toast messages
+        photoUploadError: 'Ikosa mu kohereza ifoto (kohereza bizakomeza nta foto).',
+        savingError: 'Ikosa mu kubika (reba seriveri).',
+        supabaseUnavailable: 'Supabase ntiboneka — kohereza byaretswe.',
+        submissionSaved: 'Kohereza byabitswe.',
+        cvDownloaded: 'CV yapakuwe neza!',
+        dataExported: 'Amakuru yoherejwe muri CSV',
+        unexpectedError: 'Ikosa ritunguranye. Reba console.',
+      }
+    };
+
+    // Translation helper
+    const useTranslation = (language) => {
+      return (key) => translations[language]?.[key] || translations.en[key] || key;
+    };
 
     // ==================== Supabase config & client ====================
     const SUPABASE_URL = 'https://hjbgrykqfffaptgrrgte.supabase.co';
@@ -104,6 +401,7 @@
 
     // Minimal Header
     function Header({ language, setLanguage, theme, setTheme }) {
+      const t = useTranslation(language);
       const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
@@ -117,7 +415,7 @@
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
                 <span className="text-white font-bold text-sm">CV</span>
               </div>
-              <span className="font-semibold text-white hidden sm:inline">MODERN CV BUILDER</span>
+              <span className="font-semibold text-white hidden sm:inline">{t('appTitle')}</span>
             </div>
 
             <div className="flex items-center gap-3">
@@ -138,7 +436,7 @@
 
     // Minimal Landing
     function Landing({ onStart, language }) {
-      const t = { startBuilding: 'Start Building Your CV', appTitle: 'Modern CV Builder', motto: 'Create your CV, preview it, and download it for free.' };
+      const t = useTranslation(language);
       return (
         <div className="min-h-screen flex items-center justify-center px-4 pt-20">
           <div className="max-w-3xl text-center">
@@ -147,16 +445,17 @@
                 <span className="text-4xl">📄</span>
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">{t.appTitle}</h1>
-            <p className="text-lg md:text-xl mb-8 text-white opacity-90 max-w-2xl mx-auto">{t.motto}</p>
-            <button onClick={onStart} className="px-8 py-4 text-lg font-semibold bg-white text-purple-600 rounded-xl shadow-2xl"> {t.startBuilding} </button>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">{t('landingTitle')}</h1>
+            <p className="text-lg md:text-xl mb-8 text-white opacity-90 max-w-2xl mx-auto">{t('landingMotto')}</p>
+            <button onClick={onStart} className="px-8 py-4 text-lg font-semibold bg-white text-purple-600 rounded-xl shadow-2xl"> {t('startBuilding')} </button>
           </div>
         </div>
       );
     }
 
     // CV Preview (used for PDF render)
-    const CVPreview = forwardRef(({ data }, ref) => {
+    const CVPreview = forwardRef(({ data, language }, ref) => {
+      const t = useTranslation(language);
       return (
         <div ref={ref} className="bg-white p-8 shadow-lg" style={{ width: '210mm', minHeight: '297mm' }}>
           <div className="flex items-start gap-6 mb-6 pb-6 border-b-2 border-indigo-500">
@@ -175,7 +474,7 @@
 
           {data.professionalSummary && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-indigo-600 mb-3">Professional Objective</h2>
+              <h2 className="text-xl font-semibold text-indigo-600 mb-3">{t('professionalObjective')}</h2>
               <p className="text-sm text-slate-700 leading-relaxed">{data.professionalSummary}</p>
             </div>
           )}
@@ -183,7 +482,7 @@
           {/* Education (first entry) */}
           {data.education?.[0]?.schoolName && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-purple-600 mb-3">Education</h2>
+              <h2 className="text-xl font-semibold text-purple-600 mb-3">{t('education')}</h2>
               <div className="mb-3">
                 <div className="flex justify-between items-start">
                   <div>
@@ -199,11 +498,11 @@
           {/* Work (first entry) */}
           {data.workExperience?.[0] && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-indigo-600 mb-3">Work Experience</h2>
+              <h2 className="text-xl font-semibold text-indigo-600 mb-3">{t('workExperience')}</h2>
               <div className="mb-4">
                 <div className="flex justify-between items-start mb-1">
                   <p className="font-semibold text-slate-900">{data.workExperience[0].jobTitle}</p>
-                  <span className="text-sm text-slate-500">{data.workExperience[0].startDate} - {data.workExperience[0].current ? 'Present' : data.workExperience[0].endDate}</span>
+                  <span className="text-sm text-slate-500">{data.workExperience[0].startDate} - {data.workExperience[0].current ? t('present') : data.workExperience[0].endDate}</span>
                 </div>
                 <p className="text-sm text-slate-600 mb-2">{data.workExperience[0].employer}</p>
                 <p className="text-sm text-slate-700 leading-relaxed">{data.workExperience[0].description}</p>
@@ -214,17 +513,17 @@
           {/* Skills */}
           {(data.skills?.software || data.skills?.dataTools || data.skills?.programming) && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-pink-600 mb-3">Skills</h2>
-              {data.skills?.software && <div className="mb-2"><strong>Software:</strong> {data.skills.software}</div>}
-              {data.skills?.dataTools && <div className="mb-2"><strong>Data & Analytics:</strong> {data.skills.dataTools}</div>}
-              {data.skills?.programming && <div className="mb-2"><strong>Programming:</strong> {data.skills.programming}</div>}
+              <h2 className="text-xl font-semibold text-pink-600 mb-3">{t('skills')}</h2>
+              {data.skills?.software && <div className="mb-2"><strong>{t('software')}:</strong> {data.skills.software}</div>}
+              {data.skills?.dataTools && <div className="mb-2"><strong>{t('dataTools')}:</strong> {data.skills.dataTools}</div>}
+              {data.skills?.programming && <div className="mb-2"><strong>{t('programming')}:</strong> {data.skills.programming}</div>}
             </div>
           )}
 
           {/* Languages */}
           {data.languages && data.languages.length > 0 && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-cyan-600 mb-3">Languages</h2>
+              <h2 className="text-xl font-semibold text-cyan-600 mb-3">{t('languages')}</h2>
               <div className="flex gap-4 flex-wrap">
                 {data.languages.map((l, i) => <span key={i} className="text-sm text-slate-700">{l.language}: {l.proficiency}</span>)}
               </div>
@@ -234,7 +533,7 @@
           {/* Volunteer */}
           {data.volunteerism?.[0] && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-purple-600 mb-3">Volunteer</h2>
+              <h2 className="text-xl font-semibold text-purple-600 mb-3">{t('volunteerism')}</h2>
               <p className="font-semibold">{data.volunteerism[0].title}</p>
               <p className="text-sm text-slate-600">{data.volunteerism[0].organization}</p>
               <p className="text-sm text-slate-700">{data.volunteerism[0].description}</p>
@@ -244,7 +543,7 @@
           {/* References */}
           {data.references?.[0] && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-indigo-600 mb-3">References</h2>
+              <h2 className="text-xl font-semibold text-indigo-600 mb-3">{t('references')}</h2>
               <div className="grid grid-cols-2 gap-4">
                 {data.references.slice(0,2).map((r, i) => (
                   <div key={i} className="text-sm">
@@ -271,7 +570,8 @@
     });
 
     // CV Builder - main interactive area
-    function CVBuilder({ onBack }) {
+    function CVBuilder({ onBack, language }) {
+      const t = useTranslation(language);
       const [cvData, setCVData] = useState({
         personalInfo: { fullName: '', email: '', phone: '', location: '', photo: '', photoFile: null },
         professionalSummary: '',
@@ -279,9 +579,9 @@
         workExperience: [],
         skills: { software: '', dataTools: '', programming: '' },
         languages: [
-          { language: 'kinyarwanda', proficiency: 'native' },
-          { language: 'english', proficiency: 'intermediate' },
-          { language: 'french', proficiency: 'basic' },
+          { language: t('kinyarwanda'), proficiency: t('native') },
+          { language: t('english'), proficiency: t('intermediate') },
+          { language: t('french'), proficiency: t('basic') },
         ],
         volunteerism: [],
         references: [{ id: Date.now().toString(), name: '', title: '', email: '', phone: '' }, { id: (Date.now()+1).toString(), name: '', title: '', email: '', phone: '' }],
@@ -443,7 +743,7 @@
             const uploadResult = await uploadPhotoIfNeeded();
             if (uploadResult?.error) {
                 console.error('Photo upload error:', uploadResult.error);
-                showToast('Error uploading photo (submission will continue without photo).');
+                showToast(t('photoUploadError'));
             } else {
                 photoUrl = uploadResult.publicUrl || null;
             }
@@ -452,20 +752,20 @@
             const insertResult = await saveToSupabase(photoUrl);
             if (insertResult?.error) {
                 console.error('Insert error:', insertResult.error);
-                showToast('Error saving submission (check server).');
+                showToast(t('savingError'));
             } else if (insertResult?.skipped) {
                 // supabase not available: we still proceed to generate PDF
-                showToast('Supabase unavailable — submission skipped.');
+                showToast(t('supabaseUnavailable'));
             } else {
-                showToast('Submission saved.');
+                showToast(t('submissionSaved'));
             }
 
             // Generate and download PDF for user
             await generateAndDownloadPDF();
-            showToast('CV downloaded successfully!');
+            showToast(t('cvDownloaded'));
         } catch (err) {
             console.error('Error in handleDownloadClick:', err);
-            showToast('Unexpected error. Check console.');
+            showToast(t('unexpectedError'));
         } finally {
             setIsSubmitting(false);
         }
@@ -476,18 +776,18 @@
         <div className="min-h-screen pt-20 pb-12">
           <div className="container mx-auto px-4">
             <div className="mb-6">
-              <button onClick={onBack} className="px-4 py-2 text-white hover:bg-white/20 rounded-lg flex items-center gap-2 transition-colors duration-300">← Back</button>
+              <button onClick={onBack} className="px-4 py-2 text-white hover:bg-white/20 rounded-lg flex items-center gap-2 transition-colors duration-300">← {t('back')}</button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
                 {/* Personal Info */}
                 <div className="p-6 card border-l-4 border-l-indigo-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">👤 Personal Information</h2>
+                  <h2 className="text-xl font-semibold mb-6">👤 {t('personalInfo')}</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="md:col-span-2 flex items-start gap-6">
                       <div className="flex-shrink-0">
-                        <label className="block text-sm font-medium mb-2">Upload Photo</label>
+                        <label className="block text-sm font-medium mb-2">{t('uploadPhoto')}</label>
                         {cvData.personalInfo.photo ? (
                           <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-300">
                             <img src={cvData.personalInfo.photo} alt="Profile" className="w-full h-full object-cover" />
@@ -499,92 +799,113 @@
                         ) : (
                           <label className="w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 transition-colors">
                             <span className="text-3xl mb-2">📷</span>
-                            <span className="text-xs text-gray-500">Upload</span>
+                            <span className="text-xs text-gray-500">{t('upload')}</span>
                             <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
                           </label>
                         )}
                       </div>
 
                       <div className="flex-1 w-full">
-                        <label className="block text-sm font-medium mb-2">Full Name</label>
-                        <input type="text" value={cvData.personalInfo.fullName} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, fullName: e.target.value } }))} placeholder="Jean Paul Mugabo" className="w-full px-4 py-2 rounded-lg" />
+                        <label className="block text-sm font-medium mb-2">{t('fullName')}</label>
+                        <input type="text" value={cvData.personalInfo.fullName} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, fullName: e.target.value } }))} placeholder={t('fullNamePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2">Email</label>
-                      <input type="email" value={cvData.personalInfo.email} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, email: e.target.value } }))} placeholder="jpmugabo@example.com" className="w-full px-4 py-2 rounded-lg" />
+                      <label className="block text-sm font-medium mb-2">{t('email')}</label>
+                      <input type="email" value={cvData.personalInfo.email} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, email: e.target.value } }))} placeholder={t('emailPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2">Phone</label>
-                      <input type="tel" value={cvData.personalInfo.phone} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, phone: e.target.value } }))} placeholder="+250 788 123 456" className="w-full px-4 py-2 rounded-lg" />
+                      <label className="block text-sm font-medium mb-2">{t('phone')}</label>
+                      <input type="tel" value={cvData.personalInfo.phone} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, phone: e.target.value } }))} placeholder={t('phonePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
                     </div>
 
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium mb-2">Location</label>
-                      <input type="text" value={cvData.personalInfo.location} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, location: e.target.value } }))} placeholder="Kigali, Rwanda" className="w-full px-4 py-2 rounded-lg" />
+                      <label className="block text-sm font-medium mb-2">{t('location')}</label>
+                      <input type="text" value={cvData.personalInfo.location} onChange={(e) => setCVData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, location: e.target.value } }))} placeholder={t('locationPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
                     </div>
                   </div>
                 </div>
 
                 {/* Professional Summary */}
                 <div className="p-6 card border-l-4 border-l-purple-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">💼 Professional Summary</h2>
-                  <textarea value={cvData.professionalSummary} onChange={(e) => setCVData(prev => ({ ...prev, professionalSummary: e.target.value }))} rows={4} placeholder="A dedicated professional..." className="w-full px-4 py-2 rounded-lg" />
+                  <h2 className="text-xl font-semibold mb-6">💼 {t('professionalSummary')}</h2>
+                  <textarea value={cvData.professionalSummary} onChange={(e) => setCVData(prev => ({ ...prev, professionalSummary: e.target.value }))} rows={4} placeholder={t('professionalSummaryPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
                 </div>
 
                 {/* Education - only minimal UI for example */}
                 <div className="p-6 card border-l-4 border-l-pink-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🎓 Education</h2>
+                  <h2 className="text-xl font-semibold mb-6">🎓 {t('education')}</h2>
                   {cvData.education.map((edu, i) => (
                     <div key={edu.id} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <label className="block text-sm font-medium mb-2">Institution Name</label>
+                      <label className="block text-sm font-medium mb-2">{t('institutionName')}</label>
                       <input type="text" value={edu.schoolName} onChange={(e) => {
                         const arr = [...cvData.education]; arr[i] = { ...arr[i], schoolName: e.target.value }; setCVData(prev => ({ ...prev, education: arr }));
-                      }} placeholder="University of Rwanda" className="w-full px-4 py-2 rounded-lg mb-2" />
+                      }} placeholder={t('institutionPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
                       <div className="grid grid-cols-2 gap-4">
-                        <input type="text" value={edu.degree} onChange={(e) => { const arr=[...cvData.education]; arr[i]={...arr[i], degree:e.target.value}; setCVData(prev=>({...prev, education:arr})); }} placeholder="Bachelor's in CS" className="w-full px-4 py-2 rounded-lg" />
-                        <input type="text" value={edu.graduationYear} onChange={(e) => { const arr=[...cvData.education]; arr[i]={...arr[i], graduationYear:e.target.value}; setCVData(prev=>({...prev, education:arr})); }} placeholder="2024" className="w-full px-4 py-2 rounded-lg" />
+                        <div>
+                          <label className="block text-sm font-medium mb-2">{t('degree')}</label>
+                          <input type="text" value={edu.degree} onChange={(e) => { const arr=[...cvData.education]; arr[i]={...arr[i], degree:e.target.value}; setCVData(prev=>({...prev, education:arr})); }} placeholder={t('degreePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">{t('graduationYear')}</label>
+                          <input type="text" value={edu.graduationYear} onChange={(e) => { const arr=[...cvData.education]; arr[i]={...arr[i], graduationYear:e.target.value}; setCVData(prev=>({...prev, education:arr})); }} placeholder={t('graduationYearPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
+                        </div>
                       </div>
                     </div>
                   ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, education: [...prev.education, { id: Date.now().toString(), schoolName:'', degree:'', graduationYear:'' }] }))}>➕ Add Education</button>
+                  <button onClick={() => setCVData(prev => ({ ...prev, education: [...prev.education, { id: Date.now().toString(), schoolName:'', degree:'', graduationYear:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addEducation')}</button>
                 </div>
 
                 {/* Work Experience (first entry is mapped) */}
                 <div className="p-6 card border-l-4 border-l-cyan-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🏢 Work Experience</h2>
+                  <h2 className="text-xl font-semibold mb-6">🏢 {t('workExperience')}</h2>
                   {cvData.workExperience.map((w, idx) => (
                     <div key={w.id || idx} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <input type="text" value={w.jobTitle} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], jobTitle:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder="Job Title" className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <input type="text" value={w.employer} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], employer:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder="Employer" className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('jobTitle')}</label>
+                      <input type="text" value={w.jobTitle} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], jobTitle:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('jobTitlePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('employer')}</label>
+                      <input type="text" value={w.employer} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], employer:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('employerPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
                       <div className="grid grid-cols-2 gap-4">
-                        <input type="text" value={w.startDate} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], startDate:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder="Start Date" className="w-full px-4 py-2 rounded-lg" />
-                        <input type="text" value={w.endDate} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], endDate:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder="End Date" className="w-full px-4 py-2 rounded-lg" />
+                        <div>
+                          <label className="block text-sm font-medium mb-2">{t('startDate')}</label>
+                          <input type="text" value={w.startDate} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], startDate:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('startDatePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">{t('endDate')}</label>
+                          <input type="text" value={w.endDate} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], endDate:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('endDatePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
+                        </div>
                       </div>
-                      <textarea value={w.description} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], description:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder="Description" rows={3} className="w-full px-4 py-2 rounded-lg mt-2"></textarea>
+                      <label className="block text-sm font-medium mb-2 mt-2">{t('description')}</label>
+                      <textarea value={w.description} onChange={(e) => { const arr=[...cvData.workExperience]; arr[idx]={...arr[idx], description:e.target.value}; setCVData(prev=>({...prev, workExperience:arr})); }} placeholder={t('descriptionPlaceholder')} rows={3} className="w-full px-4 py-2 rounded-lg"></textarea>
                     </div>
                   ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, workExperience: [...prev.workExperience, { id: Date.now().toString(), jobTitle:'', employer:'', startDate:'', endDate:'', current:false, description:'' }] }))}>➕ Add Work</button>
+                  <button onClick={() => setCVData(prev => ({ ...prev, workExperience: [...prev.workExperience, { id: Date.now().toString(), jobTitle:'', employer:'', startDate:'', endDate:'', current:false, description:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addWork')}</button>
                 </div>
 
                 {/* Skills */}
                 <div className="p-6 card border-l-4 border-l-indigo-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🔧 Skills</h2>
-                  <input type="text" value={cvData.skills.software} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, software: e.target.value } }))} placeholder="Microsoft Office, Adobe Suite" className="w-full px-4 py-2 rounded-lg mb-2" />
-                  <input type="text" value={cvData.skills.dataTools} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, dataTools: e.target.value } }))} placeholder="Excel, Tableau" className="w-full px-4 py-2 rounded-lg mb-2" />
-                  <input type="text" value={cvData.skills.programming} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, programming: e.target.value } }))} placeholder="Python, JavaScript" className="w-full px-4 py-2 rounded-lg" />
+                  <h2 className="text-xl font-semibold mb-6">🔧 {t('skills')}</h2>
+                  <label className="block text-sm font-medium mb-2">{t('software')}</label>
+                  <input type="text" value={cvData.skills.software} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, software: e.target.value } }))} placeholder={t('softwarePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
+                  <label className="block text-sm font-medium mb-2">{t('dataTools')}</label>
+                  <input type="text" value={cvData.skills.dataTools} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, dataTools: e.target.value } }))} placeholder={t('dataToolsPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
+                  <label className="block text-sm font-medium mb-2">{t('programming')}</label>
+                  <input type="text" value={cvData.skills.programming} onChange={(e) => setCVData(prev => ({ ...prev, skills: { ...prev.skills, programming: e.target.value } }))} placeholder={t('programmingPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
                 </div>
 
                 {/* Languages */}
                 <div className="p-6 card border-l-4 border-l-purple-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">🌍 Languages</h2>
+                  <h2 className="text-xl font-semibold mb-6">🌍 {t('languages')}</h2>
                   {cvData.languages.map((lang, idx) => (
                     <div key={idx} className="grid grid-cols-2 gap-4 mb-4">
                       <input type="text" value={lang.language} onChange={(e) => { const arr=[...cvData.languages]; arr[idx]={...arr[idx], language:e.target.value}; setCVData(prev=>({...prev, languages:arr})); }} className="w-full px-4 py-2 rounded-lg" />
                       <select value={lang.proficiency} onChange={(e) => { const arr=[...cvData.languages]; arr[idx]={...arr[idx], proficiency:e.target.value}; setCVData(prev=>({...prev, languages:arr})); }} className="w-full px-4 py-2 rounded-lg">
-                        <option value="native">Native</option><option value="fluent">Fluent</option><option value="intermediate">Intermediate</option><option value="basic">Basic</option>
+                        <option value={t('native')}>{t('native')}</option>
+                        <option value={t('fluent')}>{t('fluent')}</option>
+                        <option value={t('intermediate')}>{t('intermediate')}</option>
+                        <option value={t('basic')}>{t('basic')}</option>
                       </select>
                     </div>
                   ))}
@@ -592,53 +913,64 @@
 
                 {/* Volunteer */}
                 <div className="p-6 card border-l-4 border-l-pink-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">❤️ Volunteerism</h2>
+                  <h2 className="text-xl font-semibold mb-6">❤️ {t('volunteerism')}</h2>
                   {cvData.volunteerism.map((v, i) => (
                     <div key={v.id || i} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <input type="text" value={v.title} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], title:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} placeholder="Activity/Role" className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <input type="text" value={v.organization} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], organization:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} placeholder="Organization" className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('activityRole')}</label>
+                      <input type="text" value={v.title} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], title:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} placeholder={t('activityRolePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('organization')}</label>
+                      <input type="text" value={v.organization} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], organization:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} placeholder={t('organizationPlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('description')}</label>
                       <textarea value={v.description} onChange={(e) => { const arr=[...cvData.volunteerism]; arr[i]={...arr[i], description:e.target.value}; setCVData(prev=>({...prev, volunteerism:arr})); }} rows={2} className="w-full px-4 py-2 rounded-lg"></textarea>
                     </div>
                   ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, volunteerism: [...prev.volunteerism, { id: Date.now().toString(), title:'', organization:'', description:'' }] }))}>➕ Add Volunteer</button>
+                  <button onClick={() => setCVData(prev => ({ ...prev, volunteerism: [...prev.volunteerism, { id: Date.now().toString(), title:'', organization:'', description:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addVolunteer')}</button>
                 </div>
 
                 {/* References */}
                 <div className="p-6 card border-l-4 border-l-cyan-500 shadow">
-                  <h2 className="text-xl font-semibold mb-6">👥 References</h2>
+                  <h2 className="text-xl font-semibold mb-6">👥 {t('references')}</h2>
                   {cvData.references.map((r, idx) => (
                     <div key={r.id || idx} className="mb-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <input type="text" value={r.name} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], name:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder="Reference Name" className="w-full px-4 py-2 rounded-lg mb-2" />
-                      <input type="text" value={r.title} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], title:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder="Title" className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('referenceName')}</label>
+                      <input type="text" value={r.name} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], name:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referenceNamePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
+                      <label className="block text-sm font-medium mb-2">{t('referenceTitle')}</label>
+                      <input type="text" value={r.title} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], title:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referenceTitlePlaceholder')} className="w-full px-4 py-2 rounded-lg mb-2" />
                       <div className="grid grid-cols-2 gap-4">
-                        <input type="email" value={r.email} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], email:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder="reference@example.com" className="w-full px-4 py-2 rounded-lg" />
-                        <input type="tel" value={r.phone} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], phone:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder="+250 788 000 000" className="w-full px-4 py-2 rounded-lg" />
+                        <div>
+                          <label className="block text-sm font-medium mb-2">{t('referenceEmail')}</label>
+                          <input type="email" value={r.email} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], email:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referenceEmailPlaceholder')} className="w-full px-4 py-2 rounded-lg" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">{t('referencePhone')}</label>
+                          <input type="tel" value={r.phone} onChange={(e) => { const arr=[...cvData.references]; arr[idx]={...arr[idx], phone:e.target.value}; setCVData(prev=>({...prev, references:arr})); }} placeholder={t('referencePhonePlaceholder')} className="w-full px-4 py-2 rounded-lg" />
+                        </div>
                       </div>
                     </div>
                   ))}
-                  <button onClick={() => setCVData(prev => ({ ...prev, references: [...prev.references, { id: Date.now().toString(), name:'', title:'', email:'', phone:'' }] }))}>➕ Add Reference</button>
+                  <button onClick={() => setCVData(prev => ({ ...prev, references: [...prev.references, { id: Date.now().toString(), name:'', title:'', email:'', phone:'' }] }))} className="text-indigo-600 hover:text-indigo-700">➕ {t('addReference')}</button>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 sticky bottom-4 card p-4 shadow-lg no-print">
                   <button onClick={handleDownloadClick} disabled={isSubmitting} className="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 text-white rounded-lg font-semibold shadow-lg">
-                    ⬇️ Download PDF
+                    ⬇️ {t('downloadPdf')}
                   </button>
                   <button onClick={() => {
                     // quick CSV export of main fields
                     const csv = [
-                      ['Full Name', cvData.personalInfo.fullName || ''],
-                      ['Email', cvData.personalInfo.email || ''],
-                      ['Phone', cvData.personalInfo.phone || ''],
-                      ['Location', cvData.personalInfo.location || ''],
-                      ['Summary', cvData.professionalSummary || '']
+                      [t('fullName'), cvData.personalInfo.fullName || ''],
+                      [t('email'), cvData.personalInfo.email || ''],
+                      [t('phone'), cvData.personalInfo.phone || ''],
+                      [t('location'), cvData.personalInfo.location || ''],
+                      [t('professionalSummary'), cvData.professionalSummary || '']
                     ].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
                     const blob = new Blob([csv], { type: 'text/csv' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a'); a.href = url; a.download = `${(cvData.personalInfo.fullName||'CV').replace(/\s+/g,'_')}_data.csv`; a.click(); URL.revokeObjectURL(url);
-                    showToast('Data exported as CSV');
+                    showToast(t('dataExported'));
                   }} className="flex-1 px-6 py-3 border-2 border-white/30 hover:bg-white/10 rounded-lg font-semibold text-white">
-                    📊 Export CSV
+                    📊 {t('exportCsv')}
                   </button>
                 </div>
               </div>
@@ -646,10 +978,10 @@
               {/* Preview Column */}
               <div className="hidden lg:block">
                 <div className="sticky top-24">
-                  <div className="mb-4 flex items-center gap-2 text-white">👁️ Live Preview</div>
+                  <div className="mb-4 flex items-center gap-2 text-white">👁️ {t('livePreview')}</div>
                   <div className="max-h-[calc(100vh-200px)] overflow-auto border-2 border-white/30 rounded-lg shadow-xl">
                     <div style={{ transform: 'scale(0.38)', transformOrigin: 'top left', width: '263%' }}>
-                      <CVPreview data={cvData} />
+                      <CVPreview data={cvData} language={language} />
                     </div>
                   </div>
                 </div>
@@ -661,7 +993,7 @@
 
           {/* Hidden full-size preview used for PDF generation */}
           <div id="hidden-preview" aria-hidden="true">
-            <CVPreview ref={previewRef} data={cvData} />
+            <CVPreview ref={previewRef} data={cvData} language={language} />
           </div>
         </div>
       );
@@ -690,7 +1022,7 @@
 
           <Header language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} />
 
-          {!showBuilder ? <Landing onStart={() => setShowBuilder(true)} language={language} /> : <CVBuilder onBack={() => setShowBuilder(false)} />}
+          {!showBuilder ? <Landing onStart={() => setShowBuilder(true)} language={language} /> : <CVBuilder onBack={() => setShowBuilder(false)} language={language} />}
         </div>
       );
     }
