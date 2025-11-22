@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -431,6 +431,27 @@
             </div>
           </div>
         </header>
+      );
+    }
+
+    // Footer Component
+    function Footer() {
+      return (
+        <footer className="w-full py-6 mt-12 border-t border-white/20 no-print">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-white/80 text-sm">
+              Developed by{' '}
+              <a 
+                href="https://tuyisengenge-jean-chrisostom.github.io/TUYISENGE-Jean-Chrisostom/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white font-semibold hover:text-indigo-300 transition-colors duration-200 underline"
+              >
+                TUYISENGE Jean Chrisostom
+              </a>
+            </p>
+          </div>
+        </footer>
       );
     }
 
@@ -1011,7 +1032,7 @@
       }, [theme]);
 
       return (
-        <div className="min-h-screen transition-colors duration-300">
+        <div className="min-h-screen transition-colors duration-300 flex flex-col">
           <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
             <div className="tech-icon"></div>
             <div className="tech-icon"></div>
@@ -1022,7 +1043,11 @@
 
           <Header language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} />
 
-          {!showBuilder ? <Landing onStart={() => setShowBuilder(true)} language={language} /> : <CVBuilder onBack={() => setShowBuilder(false)} language={language} />}
+          <div className="flex-1">
+            {!showBuilder ? <Landing onStart={() => setShowBuilder(true)} language={language} /> : <CVBuilder onBack={() => setShowBuilder(false)} language={language} />}
+          </div>
+
+          <Footer />
         </div>
       );
     }
